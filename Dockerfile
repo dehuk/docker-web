@@ -101,14 +101,15 @@ RUN apt-get update \
     && docker-php-ext-configure intl \
     && docker-php-ext-install -j$(nproc) intl
 
-# Extensions wddx
-RUN docker-php-ext-install wddx
-
 # Extensions xml
 RUN apt-get update \
     && apt-get install -y --no-install-recommends libxml2-dev \
-    && rm -r /var/lib/apt/lists/* \
+    && docker-php-ext-configure \
     && docker-php-ext-install -j$(nproc) xml
+
+# Extensions wddx
+RUN docker-php-ext-configure wddx --enable-libxml \
+    && docker-php-ext-install wddx
 
 # Extensions xsl
 RUN apt-get update \
@@ -127,6 +128,8 @@ RUN apt-get update \
 RUN curl -sS https://getcomposer.org/installer | php \
     && mv composer.phar /usr/local/bin/composer \
     && chmod +x /usr/local/bin/composer
+
+ADD apache/000-default.conf /etc/apache2/sites-available/000-default.conf
 
 # Other settings
 VOLUME /var/www/html
