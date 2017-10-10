@@ -41,6 +41,7 @@ RUN docker-php-ext-configure gettext \
 # Extensions gmp
 RUN apt-get update \
     && apt-get install -y libgmp-dev \
+    && ln -s /usr/include/x86_64-linux-gnu/gmp.h /usr/include/gmp.h \
     && docker-php-ext-configure gmp \
     && docker-php-ext-install -j$(nproc) gmp
 
@@ -53,6 +54,7 @@ RUN apt-get update \
 # Extensions ldap
 RUN apt-get update \
     && apt install -y libldap2-dev \
+    && ln -s /usr/lib/x86_64-linux-gnu/libldap.so /usr/lib/libldap.so \
     && docker-php-ext-configure ldap --with-libdir=lib/x86_64-linux-gnu \
     && docker-php-ext-install -j$(nproc) ldap
 
@@ -69,12 +71,16 @@ RUN docker-php-ext-configure pdo \
     && docker-php-ext-install -j$(nproc) pdo
 
 # Extensions pdo_mysql
-RUN docker-php-ext-configure pdo_mysql \
+RUN docker-php-ext-configure pdo_mysql --with-pdo-mysql=mysqlnd \
     && docker-php-ext-install -j$(nproc) pdo_mysql
 
 # Extensions mysqli
-RUN docker-php-ext-configure mysqli \
+RUN docker-php-ext-configure mysqli --with-mysqli=mysqlnd \
     && docker-php-ext-install -j$(nproc) mysqli
+
+# Extensions pcntl
+RUN docker-php-ext-configure pcntl \
+    && docker-php-ext-install -j$(nproc) pcntl
 
 # Extensions sysvmsg
 RUN docker-php-ext-configure sysvmsg \
