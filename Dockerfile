@@ -104,7 +104,7 @@ RUN apt-get update \
 # Extensions xml
 RUN apt-get update \
     && apt-get install -y --no-install-recommends libxml2-dev \
-    && docker-php-ext-configure \
+    && docker-php-ext-configure xml \
     && docker-php-ext-install -j$(nproc) xml
 
 # Extensions wddx
@@ -129,7 +129,7 @@ RUN curl -sS https://getcomposer.org/installer | php \
     && mv composer.phar /usr/local/bin/composer \
     && chmod +x /usr/local/bin/composer
 
-ADD apache/000-default.conf /etc/apache2/sites-available/000-default.conf
+COPY apache/000-default.conf /etc/apache2/sites-available/000-default.conf
 
 # Other settings
 VOLUME /var/www/html
