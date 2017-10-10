@@ -96,8 +96,7 @@ RUN apt-get update \
 
 # Extensions intl
 RUN apt-get update \
-    && apt-get install -y --no-install-recommends zlib1g-dev libicu-dev \
-    && rm -r /var/lib/apt/lists/* \
+    && apt-get install -y --no-install-recommends libicu-dev \
     && docker-php-ext-configure intl \
     && docker-php-ext-install -j$(nproc) intl
 
