@@ -1,4 +1,6 @@
-FROM php:7.1.10-apache
+FROM php:5.6.30-apache
+
+RUN a2enmod rewrite
 
 # PHP Core Extensions
 RUN apt-get update && apt-get install -y \
@@ -6,7 +8,7 @@ RUN apt-get update && apt-get install -y \
         libjpeg62-turbo-dev \
         libmcrypt-dev \
         libpng12-dev \
-        libssl-dev \
+        libssl-dev
     && docker-php-ext-install iconv mcrypt \
     && docker-php-ext-configure gd --with-freetype-dir=/usr/include/ --with-jpeg-dir=/usr/include/ \
     && docker-php-ext-install gd
@@ -27,9 +29,13 @@ RUN docker-php-ext-configure calendar \
 
 # Extensions curl
 RUN apt-get update \
-    && apt install -y curl libcurl3 libcurl3-dev \
+    && apt install -y curl libcurl4-openssl-dev \
     && docker-php-ext-configure curl \
     && docker-php-ext-install curl
+
+# Extensions dba
+RUN docker-php-ext-configure dba \
+    && docker-php-ext-install dba
 
 # Extensions exif
 RUN docker-php-ext-configure exif \
@@ -136,8 +142,6 @@ RUN apt-get update \
     && apt-get install -y --no-install-recommends libxslt-dev \
     && docker-php-ext-configure xsl \
     && docker-php-ext-install xsl
-
-RUN a2enmod rewrite
 
 # Install utils
 RUN apt-get update \
