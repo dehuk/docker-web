@@ -153,6 +153,15 @@ COPY web/apache/000-default.conf /etc/apache2/sites-available/000-default.conf
 
 COPY web/php/php.ini $PHP_INI_DIR/conf.d/memory-limit.ini
 
+# Install dependencies
+RUN apt-get update \
+    && apt-get install -y curl git gnupg
+
+# Install Node.js
+RUN curl -sL https://deb.nodesource.com/setup_6.x | bash - \
+    && apt-get install -y nodejs \
+    && rm -rf /var/lib/apt/lists/*
+
 # Other settings
 VOLUME /var/www/html
 
