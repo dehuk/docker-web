@@ -130,6 +130,12 @@ RUN apt-get update \
 # Extensions wddx
 RUN docker-php-ext-configure wddx --enable-libxml \
     && docker-php-ext-install wddx
+    
+# Extensions ssh2
+RUN apt-get update && \
+    apt-get install -y git libssh2-1 libssh2-1-dev && \
+    pecl install ssh2 && \
+    docker-php-ext-enable ssh2
 
 # Extensions xsl
 RUN apt-get update \
