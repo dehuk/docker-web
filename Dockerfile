@@ -133,13 +133,16 @@ RUN docker-php-ext-configure wddx --enable-libxml \
     
 # Extensions ssh2
 RUN apt-get update \
-    && apt-get install libssh2–1-dev libssh2–1 unzip \
-    && wget https://github.com/Sean-Der/pecl-networking-ssh2/archive/php7.zip \
-    && unzip pecl-networking-ssh2-php7.zip \
-    && cd pecl-networking-ssh2-php7 \
-    && phpize \
-    && make \
-    && make install
+    && apt-get install -y --no-install-recommends libssh2-1-dev \
+    && pecl install ssh2-1.0 && docker-php-ext-enable ssh2
+#RUN apt-get update \
+#    && apt-get install libssh2–1-dev libssh2–1 unzip \
+#    && wget https://github.com/Sean-Der/pecl-networking-ssh2/archive/php7.zip \
+#    && unzip pecl-networking-ssh2-php7.zip \
+#    && cd pecl-networking-ssh2-php7 \
+#    && phpize \
+#    && make \
+#    && make install
 
 # Extensions xsl
 RUN apt-get update \
