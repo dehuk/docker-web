@@ -154,7 +154,7 @@ RUN a2enmod rewrite
 
 # Install utils
 RUN apt-get update \
-    && apt-get install -y nano git mysql-client wget\
+    && apt-get install -y nano git mysql-client wget cron\
     && rm -r /var/lib/apt/lists/*
 
 # Install composer
